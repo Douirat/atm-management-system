@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "header.h"
-
-
+#include "header.h"  // Include the header file
 
 int main() {
-    User *newUser = NewUser();
-    printf("The user'id is %d and his full name is %s and the passwrd is: %s\n", newUser->Id, newUser->UserName, newUser->Password);
+    // Test the authenticate function
+    authenticate("test_user");
 
-    // FileWriter("Test the availability of my func!!!\n");
+    // Test the system operation
+    system_operation();
+
     return 0;
 }

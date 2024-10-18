@@ -23,13 +23,18 @@ typedef struct
     int Phone;
     float Balance;
     char AcountType;
+    Record* Next;
 }Record;
 
+// Declare a graph structur to establish the ownership relationshp between users and records:
+typedef struct{
+int Vertices;
+int Edges;
+int **Adjacency;
+};
 // Authentification functions:
 User* NewUser();
 
 
-// System functions:
-void FileWriter();
 
 #endif // !ATM
