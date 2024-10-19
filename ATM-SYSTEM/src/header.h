@@ -1,40 +1,20 @@
 #ifndef ATM
 #define ATM
 
-// Declare a global instance of the file:
+// Declare a global variable and assign it the size of the hash table:
+#define SIZE 20
 
-
-//Declare a user struct:
-typedef struct {
-int Id;
-char UserName[50];
-char Password[20];
-}User;
-
-// Declare a Record object:
-typedef struct 
-{
+// Declare the 
+typedef struct User {
     int Id;
-    int UserId;
-    char UserName[50];
-    int acountId;
-    char DateOfCreation[10];
-    char Country[60];
-    int Phone;
-    float Balance;
-    char AcountType;
-    Record* Next;
-}Record;
-
-// Declare a graph structur to establish the ownership relationshp between users and records:
-typedef struct{
-int Vertices;
-int Edges;
-int **Adjacency;
-};
-// Authentification functions:
-User* NewUser();
+    char UserName[20];  // Fixed-length character array for the username
+    char Password[20];  // Fixed-length character array for the password
+    struct User* next;  // Correct forward declaration for pointers to the same type
+    struct User* Previous;
+} User;
 
 
-
-#endif // !ATM
+// invite my the functions related the user structure to the scope:
+User *NewUser(int id, char *userName, char *password);
+int HashedValue(char* Key);
+#endif
