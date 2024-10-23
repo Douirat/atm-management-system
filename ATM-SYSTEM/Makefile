@@ -1,22 +1,17 @@
 # Variables
-SRC_FILES = src/main.c src/users.c src/hash.c
-OBJ_FILES = $(SRC_FILES:.c=.o)
-
-# Compiler and flags
-CC = cc
-CFLAGS = -Wall -g # Enable all warnings and debugging info
-
+objects = src/main.c  src/users.c src/acounts.c src/system.c # src/auth.c src/kbd.o src/command.o src/display.o src/insert.o src/search.o src/files.o src/utils.o
+OBJ_FILES = $(objects:.c=.o)
 # Target to build the final executable
-atm: $(OBJ_FILES)
-	$(CC) $(CFLAGS) -o atm $(OBJ_FILES)
+atm : $(OBJ_FILES)
+	cc -o atm $(OBJ_FILES)
 
 # Rule to compile each .c file into an .o file
 src/%.o: src/%.c src/header.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	cc -c $< -o $@
 
-# Clean target to remove object files and the executable
-clean:
-	rm -f $(OBJ_FILES) atm
+# Clean target to remove object files
+clean :
+	rm -f $(OBJ_FILES)
 
 # Phony targets
 .PHONY: clean
