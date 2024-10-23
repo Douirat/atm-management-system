@@ -82,7 +82,7 @@ void CreateNewAcount(Users *table, User *Profile)
     char country[50];
     int acountNumber;
     float balance;
-    char *acountType;
+    char acountType[10];
 
     printf("\nEnter the acount id:");
     scanf("%d", &acountId);
@@ -98,4 +98,6 @@ void CreateNewAcount(Users *table, User *Profile)
     scanf("%s", acountType);
 
     AcountCreation(table, Profile->UserName, acountId, date, country, acountNumber, balance, acountType);
+    
+    DisplayUserAcounts(table, "BenDoe");
 }

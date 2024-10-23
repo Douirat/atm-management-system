@@ -1,5 +1,5 @@
 # Variables
-objects = src/main.c  src/users.c src/acounts.c src/system.c # src/auth.c src/kbd.o src/command.o src/display.o src/insert.o src/search.o src/files.o src/utils.o
+objects = src/main.c  src/users.c src/acounts.c src/system.c src/file.c src/auth.c
 OBJ_FILES = $(objects:.c=.o)
 # Target to build the final executable
 atm : $(OBJ_FILES)

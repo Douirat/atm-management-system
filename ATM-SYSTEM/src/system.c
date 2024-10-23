@@ -7,7 +7,6 @@
 // Declare the home page menu function:
 void InitialMenu()
 {
-    int stout = false;
     int Option;
     system("clear");
     printf("\n\n    =================================== << >> {{ ATM }} << >> =================================== \n");
@@ -17,33 +16,31 @@ void InitialMenu()
     printf("\n\t\t[3]- exit\n\n");
     printf("    --------->> Please enter your choise 1, 2 or 3 here: ");
     scanf("%d", &Option);
-    while (!stout)
+
+    switch (Option)
     {
-        switch (Option)
-        {
-        case 1:
-            printf("The user want to login\n");
-            stout = true;
-            break;
-        case 2:
-            printf("The user wants to register\n");
-            stout = true;
-            break;
-        case 3:
-            printf("The user want to exit\n");
-            stout = true;
-            break;
-        default:
-            printf("Please enter a valid choice!\n");
-            return;
-        }
+    case 1:
+        printf("The user want to login\n");
+        //  ProfileMenu(usersTable, usersTable->HashedUsers[HashedIndex("BenDoe")]);
+        break;
+    case 2:
+        printf("The user wants to register\n");
+
+        break;
+    case 3:
+        printf("The user want to exit\n");
+
+        break;
+    default:
+        printf("Please enter a valid choice!\n");
+        return;
     }
 }
 
 // Declare the profile menu:
-void ProfileMenu(Users* table, User *Profile)
+void ProfileMenu(Users *table, User *Profile)
 {
-    system("CLEAR");
+    system("clear");
     int Option;
     printf("\n\n    =================================== << >> {{ ATM }} << >> =================================== \n");
     printf("\n   -------------------->> Hello again mr %s How can we assist you today <<--------------------\n", Profile->UserName);
