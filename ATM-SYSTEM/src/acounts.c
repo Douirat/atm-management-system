@@ -83,7 +83,7 @@ void CreateNewAcount(Users *table, User *Profile)
     int acountNumber;
     float balance;
     char acountType[10];
-
+   
     printf("\nEnter the acount id:");
     scanf("%d", &acountId);
     printf("\nEnter creation data in this form: 11/11/1111: ");
@@ -98,6 +98,11 @@ void CreateNewAcount(Users *table, User *Profile)
     scanf("%s", acountType);
 
     AcountCreation(table, Profile->UserName, acountId, date, country, acountNumber, balance, acountType);
-    
-    DisplayUserAcounts(table, "BenDoe");
+    AcountsWriter(table, Profile);
+}
+
+// The handler of inserting a new acount in the file:
+void AcountsWriter(Users *table, User *Profile){
+     WritingToFile("data/records.txt", "w", "");
+    AppendAcount(table->HashedUsers[HashedIndex(Profile->UserName)],  table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts);
 }

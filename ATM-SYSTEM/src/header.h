@@ -46,6 +46,7 @@ bool UserExists(char *input, char *userName);
 void DisplayUserAcounts(Users *table, char *userName);
 void AcountDeletion(Users *table, char *userName, int acountId);
 
+
 // Invite the logic related to the acount to the scope:
 Acount *NewAcount(int acountId, char *date, char *country, int acountNumber, float balance, char *acountType);
 void CreateAcount(Acount **Node, Acount *newAcount);
@@ -53,18 +54,20 @@ void AcountCreation(Users *table, char *userName, int acountId, char *date, char
 void DisplayAcounts(Acount *Node);
 void DeleteAcount(Acount **Node, int id);
 void CreateNewAcount(Users *table, User *Profile);
-
+void AcountsWriter(Users *table, User *Profile);
 // Calling the system functionalies to the scope:
 void InitialMenu();
 void ProfileMenu(Users *table, User *Profile);
+void UserRegistration();
 
 // The logic related to the file out/in=>puts:
-void WritingToFile(const char *filePath, const char *string);
+void WritingToFile(const char *filePath,const char *mode, const char *string);
 void ReadFile(const char *filePath);
-
+void AppendAcount(User *user, Acount *Node);
 // Authentification and validation and helper methods:
 int Atoi(const char *str);
 char *Itoa(int num);
 float Atof(char *str);
 char* Ftoa(float fl);
+
 #endif // !ATM

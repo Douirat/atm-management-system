@@ -25,7 +25,7 @@ void InitialMenu()
         break;
     case 2:
         printf("The user wants to register\n");
-
+        UserRegistration();
         break;
     case 3:
         printf("The user want to exit\n");
@@ -64,7 +64,7 @@ void ProfileMenu(Users *table, User *Profile)
         printf("The user wants to update his acounts\n");
         return;
     case 3:
-        printf("The user wants to all his acounts:\n");
+        printf("The user wants to check all his acounts:\n");
         return;
     case 4:
         printf("The user wants to make a transaction:\n");
@@ -79,4 +79,21 @@ void ProfileMenu(Users *table, User *Profile)
         printf("The user wants to delete his acount\n");
         return;
     }
+}
+
+// Handle a new user registration:
+void UserRegistration()
+{
+    int id;
+    char userName[50];
+    char password[20];
+    system("clear");
+    printf("\n\n-------------------------> [ ... Registration ... ] <-------------------------\n\n");
+    printf("Enter a valid id: ");
+    scanf("%d", id);
+    printf("Enter your user name: ");
+    scanf("%s", userName);
+     printf("Enter your password: ");
+    scanf("%s", password);
+    printf("The user name is: %s and the password is: %s his id is %d\n", userName, password, id);
 }
