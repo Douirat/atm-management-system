@@ -113,3 +113,12 @@ void AcountDeletion(Users* table, char *userName, int acountId)
 {
     DeleteAcount(&table->HashedUsers[HashedIndex(userName)]->Acounts, acountId);
 }
+
+// A check function to display all users:
+void DisplayUsers(User* Node) {
+    if(Node == NULL) {
+        return;
+    }
+     printf("The user id is: %d, his user name is %s and his password is: %s \n", Node->Id, Node->UserName, Node->Password);
+     DisplayUsers(Node->Next);
+}

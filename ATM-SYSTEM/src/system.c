@@ -5,7 +5,7 @@
 #include "header.h"
 
 // Declare the home page menu function:
-void InitialMenu()
+void InitialMenu(Users* table)
 {
     int Option;
     system("clear");
@@ -25,7 +25,7 @@ void InitialMenu()
         break;
     case 2:
         printf("The user wants to register\n");
-        UserRegistration();
+        UserRegistration(table);
         break;
     case 3:
         printf("The user want to exit\n");
@@ -82,7 +82,7 @@ void ProfileMenu(Users *table, User *Profile)
 }
 
 // Handle a new user registration:
-void UserRegistration()
+void UserRegistration(Users* table)
 {
     int id;
     char userName[50];
@@ -90,10 +90,12 @@ void UserRegistration()
     system("clear");
     printf("\n\n-------------------------> [ ... Registration ... ] <-------------------------\n\n");
     printf("Enter a valid id: ");
-    scanf("%d", id);
+    scanf("%d", &id);
     printf("Enter your user name: ");
     scanf("%s", userName);
      printf("Enter your password: ");
     scanf("%s", password);
     printf("The user name is: %s and the password is: %s his id is %d\n", userName, password, id);
+    Insertion(table, id, userName, password);
+    AppendNewUser(table->HashedUsers[HashedIndex(userName)]);
 }
