@@ -83,7 +83,7 @@ void CreateNewAcount(Users *table, User *Profile)
     int acountNumber;
     float balance;
     char acountType[10];
-   
+
     printf("\nEnter the acount id:");
     scanf("%d", &acountId);
     printf("\nEnter creation data in this form: 11/11/1111: ");
@@ -94,15 +94,27 @@ void CreateNewAcount(Users *table, User *Profile)
     scanf("%d", &acountNumber);
     printf("\nEnter your the amount you want to deposit:");
     scanf("%f", &balance);
-    printf("\nEnter the acount type: ");
+    printf("\n         ------> Choose a type: ");
+    printf("\n              -> Saving:");
+    printf("\n              -> Current:");
+    printf("\n              -> Fixed01: (for 1 year)");
+    printf("\n              -> Fixed02: (for 2 year)");
+    printf("\n              -> Fixed03: (for 3 year)");
+    printf("\n         ------> Enter the acount type: ");
     scanf("%s", acountType);
 
     AcountCreation(table, Profile->UserName, acountId, date, country, acountNumber, balance, acountType);
-    AcountsWriter(table, Profile);
+    AcountsWriter(table, "a", Profile);
 }
 
 // The handler of inserting a new acount in the file:
-void AcountsWriter(Users *table, User *Profile){
-     WritingToFile("data/records.txt", "w", "");
-    AppendAcount(table->HashedUsers[HashedIndex(Profile->UserName)],  table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts);
+void AcountsWriter(Users *table, char* mode, User *Profile)
+{
+    WritingToFile("data/records.txt", mode, "");
+    AppendAcount(table->HashedUsers[HashedIndex(Profile->UserName)], table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts);
+}
+
+// Display all the acounts of the logged in user:
+void CheckUserAcounts(Users *table, User* Profile) {
+
 }

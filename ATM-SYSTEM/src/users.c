@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "header.h"
-
+#include <unistd.h>
 // Instantiate a new user:
 User *NewUser(int id, char *userName, char *password)
 {
@@ -109,16 +109,73 @@ void DisplayUserAcounts(Users *table, char *userName)
 }
 
 // Delete a specific acount based on its id:
-void AcountDeletion(Users* table, char *userName, int acountId)
+void AcountDeletion(Users *table, char *userName, int acountId)
 {
     DeleteAcount(&table->HashedUsers[HashedIndex(userName)]->Acounts, acountId);
 }
 
 // A check function to display all users:
-void DisplayUsers(User* Node) {
-    if(Node == NULL) {
+void DisplayUsers(User *Node)
+{
+    if (Node == NULL)
+    {
         return;
     }
-     printf("The user id is: %d, his user name is %s and his password is: %s \n", Node->Id, Node->UserName, Node->Password);
-     DisplayUsers(Node->Next);
+    printf("The user id is: %d, his user name is %s and his password is: %s \n", Node->Id, Node->UserName, Node->Password);
+    DisplayUsers(Node->Next);
 }
+
+// Bring a pointer to the loged user:
+User *LogedUser(User *Node, char *userName)
+{
+    if (Node == NULL)
+    {
+        return NULL;
+    }
+    if (strcmp(Node->UserName, userName) == 0)
+    {
+        return Node;
+    }
+    return LogedUser(Node->Next, userName);
+}
+
+// Search for a users in an other form login:
+void Login(Users *table)
+{
+    system("clear");
+    char userName[50];
+    char password[20];
+    printf("\n\n------------------------------> [ ... Login ... ] <------------------------------\n\n");
+    printf("Enter your user name: ");
+    scanf("%s", userName);
+
+    printf("your user name is: %s and your password is: %s\n", userName, password);
+    User *logedUser = LogedUser(table->HashedUsers[HashedIndex(userName)], userName);
+    if (logedUser == NULL)
+    {
+        printf("User does'nt exist:");
+        exit(1);
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        printf("Enter your password: ");
+        scanf("%s", password);
+        if (strcmp(logedUser->Password, password) == 0)
+        {
+            printf("Connecting...\n");
+            sleep(3);
+            ProfileMenu(table, logedUser);
+            break;
+        }
+        printf("You only have three chances!!!\n");
+        sleep(3);
+    }
+}
+
+// Update a specific acount:
+
+
+// Delete a specific acount:
+
+
+// 

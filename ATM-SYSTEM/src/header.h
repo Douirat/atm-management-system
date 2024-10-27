@@ -3,7 +3,7 @@
 #define ATM
 
 // Declare a global variable to hold the siof my table
-#define TABLE_SIZE 100
+#define TABLE_SIZE 20
 // Declare filePointer as an extern variable. This tells the compiler that the variable exists but will be defined in one of the source files
 extern FILE *filePointer;
 
@@ -46,6 +46,8 @@ bool UserExists(char *input, char *userName);
 void DisplayUserAcounts(Users *table, char *userName);
 void AcountDeletion(Users *table, char *userName, int acountId);
 void DisplayUsers(User* Node);
+void Login(Users* table);
+User *LogedUser(User *Node, char *userName);
 
 
 // Invite the logic related to the acount to the scope:
@@ -55,10 +57,11 @@ void AcountCreation(Users *table, char *userName, int acountId, char *date, char
 void DisplayAcounts(Acount *Node);
 void DeleteAcount(Acount **Node, int id);
 void CreateNewAcount(Users *table, User *Profile);
-void AcountsWriter(Users *table, User *Profile);
+void AcountsWriter(Users *table, char* mode, User *Profile);
+void CheckUserAcounts(Users *table, User* Profile);
 
 // Calling the system functionalies to the scope:
-void InitialMenu();
+void InitialMenu(Users* table);
 void ProfileMenu(Users *table, User *Profile);
 void UserRegistration(Users* table);
 
@@ -69,6 +72,7 @@ void AppendAcount(User *user, Acount *Node);
 void AppendNewUser(User *user);
 Users * ExtractUsers();
 void ExtractAcounts();
+
 
 // Authentification and validation and helper methods:
 int Atoi(const char *str);

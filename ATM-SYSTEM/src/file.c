@@ -77,14 +77,16 @@ void AppendAcount(User *user, Acount *Node)
     str[0] = '\0';
 
     // Safely concatenate account data into the buffer
-    int err = snprintf(str, bufferSize, "%d %d %s %s %s %.2f %s\n",
+    int err = snprintf(str, bufferSize, "%d %d %s %s %s %d %.2f %s\n",
                        Node->AcountId,
                        user->Id,
                        user->UserName,
                        Node->CreationDate,
                        Node->Country,
+                       Node->AcountNumber,
                        Node->Balance,
                        Node->AcountType);
+
     if (err == 1)
     {
         printf("Error converting data\n");
@@ -173,7 +175,6 @@ Users *ExtractUsers()
     }
 
     free(data); // Free allocated memory for data if ReadFile uses dynamic allocation
-    ExtractAcounts(table);
     return table;
 }
 
@@ -181,7 +182,7 @@ Users *ExtractUsers()
 void ExtractAcounts(Users *table)
 {
     char *data = ReadFile("data/records.txt");
-    printf("%s", data);
+    // printf("%s", data);
     if (!data || strlen(data) == 0)
     {
         printf("Lack of data in the file!!!");
@@ -194,43 +195,60 @@ void ExtractAcounts(Users *table)
     float balance;
     char acountType[11];
     int ind = 1;
-    char UserName[50];
+    char userName[50];
 
     size_t bufferSize = 55;
     char *str;
-    str = (char*) malloc(bufferSize * sizeof(char));
-    if(!str) {
+    str = (char *)malloc(bufferSize * sizeof(char));
+    if (!str)
+    {
         printf("Memmory allocation for a buffer has failed!!!");
         exit(1);
     }
     for (int i = 0; i < strlen(data); i++)
     {
-        if(data[i] == ' ' || data[i] == '\n') {
-            switch(ind) {
-                case 1:
-                    acountId = Atoi(str);
-                case 2:
-                    strcpy(UserName, str);
-                case 3:
-                    strcpy(creationDate, str);
-                case 4:
-                    strcpy(country, str);
-                case 5:
-                    acountNumber = Atoi(str);
-                case 6:
-                    balance = Atof(str);
-                case 7:
-                    strcpy(acountType, str);
-            } 
-            str[0] = '\0';
-            if(data[i] == '\n') {
-                printf("The id is : %d the user name is %s the date %s the country is %s balance %lf the type %s");
-                // AcountCreation(table,  UserName,acountId, creationDate, country, acountNumber, balance, acountType);
-                ind = 1;
-            } else {
-                ind ++;
+
+        if (data[i] == ' ' || data[i] == '\n')
+        {
+            switch (ind)
+            {
+            case 1:
+                acountId = Atoi(str);
+                break;
+            case 2:
+                break;;
+            case 3:
+                strcpy(userName, str);
+                break;
+            case 4:
+                strcpy(creationDate, str);
+                break;
+
+            case 5:
+                strcpy(country, str);
+                break;
+            case 6:
+                acountNumber = Atoi(str);
+            case 7:
+                balance = Atof(str);
+                break;
+            case 8:
+                strcpy(acountType, str);
+                break;
             }
-        } else {
+            str[0] = '\0';
+            if (data[i] == '\n')
+            {
+                AcountCreation(table, userName, acountId, creationDate, country, acountNumber, balance, acountType);
+                ind = 1;
+            }
+            else
+            {
+                ind++;
+            }
+        }
+        else
+        {
             strncat(str, &data[i], 1);
         }
     }

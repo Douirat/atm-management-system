@@ -21,6 +21,7 @@ void InitialMenu(Users* table)
     {
     case 1:
         printf("The user want to login\n");
+         Login(table);
         //  ProfileMenu(usersTable, usersTable->HashedUsers[HashedIndex("BenDoe")]);
         break;
     case 2:
@@ -29,7 +30,6 @@ void InitialMenu(Users* table)
         break;
     case 3:
         printf("The user want to exit\n");
-
         break;
     default:
         printf("Please enter a valid choice!\n");
@@ -65,6 +65,7 @@ void ProfileMenu(Users *table, User *Profile)
         return;
     case 3:
         printf("The user wants to check all his acounts:\n");
+        CheckUserAcounts(table, Profile);
         return;
     case 4:
         printf("The user wants to make a transaction:\n");
@@ -76,7 +77,7 @@ void ProfileMenu(Users *table, User *Profile)
         printf("The user wants to transfer ownership\n");
         return;
     case 7:
-        printf("The user wants to delete his acount\n");
+        printf("The user wants to log out!!!\n");
         return;
     }
 }
