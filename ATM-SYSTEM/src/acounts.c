@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "header.h"
 
 // Instantiate a new Acount:
@@ -46,9 +47,17 @@ void DisplayAcounts(Acount *Node)
 {
     if (Node == NULL)
     {
+        printf("No acounts to show!!");
         return;
     }
-    printf("The acount id is %d, %s, %s, %d, %f, %s\n", Node->AcountId, Node->CreationDate, Node->Country, Node->AcountNumber, Node->Balance, Node->AcountType);
+
+    printf("                  ----------------------->> ... <<-----------------------\n\n");
+    printf("                     -----> Acount id: %d\n", Node->AcountId);
+    printf("                     -----> Creation Date: %s\n", Node->CreationDate);
+    printf("                     -----> The country: %s\n", Node->Country);
+    printf("                     -----> Acount Number: %d\n", Node->AcountNumber);
+    printf("                     -----> Balance: $%f\n", Node->Balance);
+    printf("                     -----> Acount type: %s\n\n", Node->AcountType);
     DisplayAcounts(Node->Next);
 }
 
@@ -111,13 +120,34 @@ void CreateNewAcount(Users *table, User *Profile)
 }
 
 // The handler of inserting a new acount in the file:
-void AcountsWriter(Users *table, char* mode, User *Profile)
+void AcountsWriter(Users *table, char *mode, User *Profile)
 {
     WritingToFile("data/records.txt", mode, "");
     AppendAcount(table->HashedUsers[HashedIndex(Profile->UserName)], table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts);
 }
 
 // Display all the acounts of the logged in user:
-void CheckUserAcounts(Users *table, User* Profile) {
-     DisplayUserAcounts(table, Profile->UserName);
+void CheckUserAcounts(Users *table, User *Profile)
+{
+    system("clear");
+    DisplayUserAcounts(table, Profile->UserName);
+    int choice;
+    printf("\n\n----------->>Enter [1] to go to the Home page and [0] to Logout\n\n");
+    scanf("%d", &choice);                  // Use &choice to pass the address
+    printf("The choice is: %d\n", choice); // Print the value of choice
+
+    if (choice == 1)
+    {
+        // Call ProfileMenu function with appropriate arguments
+        ProfileMenu(table, Profile); // Uncomment this when using ProfileMenu
+    }
+    else if (choice == 0)
+    {
+        printf("Logging out...\n");
+        sleep(3);
+    }
+    else
+    {
+        printf("Invalid choice.\n");
+    }
 }

@@ -92,6 +92,7 @@ bool UserExists(char *input, char *userName)
 void Insertion(Users *table, int id, char *userName, char *password)
 {
     User *user = NewUser(id, userName, password);
+    printf("%s\n", user->UserName);
     InsertNewUser(&table->HashedUsers[HashedIndex(userName)], user);
 }
 
@@ -105,6 +106,7 @@ void AcountCreation(Users *table, char *userName, int acountId, char *date, char
 // Display All the acounts that are :
 void DisplayUserAcounts(Users *table, char *userName)
 {
+    printf("\n\n      ------------------->> [[ ... Here is a list of all your acounts mrs %s ... ]] <-------------------\n\n", userName);
     DisplayAcounts(table->HashedUsers[HashedIndex(userName)]->Acounts);
 }
 

@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <syscall.h>
+#include <unistd.h>
 #include "header.h"
+
 
 // Declare the home page menu function:
 void InitialMenu(Users* table)
@@ -29,7 +31,8 @@ void InitialMenu(Users* table)
         UserRegistration(table);
         break;
     case 3:
-        printf("The user want to exit\n");
+        printf("Loging out....\n");
+        sleep(3);
         break;
     default:
         printf("Please enter a valid choice!\n");
@@ -100,3 +103,4 @@ void UserRegistration(Users* table)
     Insertion(table, id, userName, password);
     AppendNewUser(table->HashedUsers[HashedIndex(userName)]);
 }
+

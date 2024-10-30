@@ -36,6 +36,9 @@ typedef struct Users
     User *HashedUsers[TABLE_SIZE];
 } Users;
 
+// The main function:
+int main();
+
 // Invite the logic related to the user to the scope:
 Users *NewUsersTable();
 User *NewUser();
