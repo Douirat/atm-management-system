@@ -6,7 +6,7 @@ int main()
 {
 
     Users *usersTable = ExtractUsers(usersTable);
-    ExtractAcounts(usersTable);
+    usersTable = ExtractAcounts(&usersTable);
 
 
     // for (int i = 0; i < TABLE_SIZE; i++)
@@ -14,7 +14,7 @@ int main()
     //     if (usersTable->HashedUsers[i] != NULL)
     //     {
     //         printf("\nThe users at index %d is: \n", i);
-    //         DisplayUsers(usersTable->HashedUsers[i]);
+    //          DisplayUserAcounts(usersTable, usersTable->HashedUsers[i]->UserName);
     //     }
     // }
 
@@ -35,7 +35,7 @@ int main()
     // UserRegistration(usersTable);
 
 
-    // InitialMenu(usersTable);
+    InitialMenu(usersTable);
 
     return 0;
 }

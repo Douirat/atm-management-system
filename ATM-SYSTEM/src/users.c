@@ -149,17 +149,18 @@ void Login(Users *table)
     printf("Enter your user name: ");
     scanf("%s", userName);
 
-    printf("your user name is: %s and your password is: %s\n", userName, password);
+    printf("your user name is: %s\n", userName);
     User *logedUser = LogedUser(table->HashedUsers[HashedIndex(userName)], userName);
     if (logedUser == NULL)
     {
-        printf("User does'nt exist:");
+        printf("             ---------------> User does'nt exist!!!! <---------------\n\n");
         exit(1);
     }
     for (int i = 0; i < 3; i++)
     {
         printf("Enter your password: ");
         scanf("%s", password);
+         printf("Your password is: %s\n", password);
         if (strcmp(logedUser->Password, password) == 0)
         {
             printf("Connecting...\n");

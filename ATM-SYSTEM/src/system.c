@@ -51,7 +51,7 @@ void ProfileMenu(Users *table, User *Profile)
     printf("\n\t\t[5]- Remove existing account\n");
     printf("\n\t\t[6]- Transfer ownership\n");
     printf("\n\t\t[7]- Exit\n\n");
-    printf("Pleaser enter your choice here: \n");
+    printf("Pleaser enter your choice here: ");
     scanf("%d", &Option);
 
     switch (Option)

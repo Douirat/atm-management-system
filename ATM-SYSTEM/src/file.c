@@ -179,10 +179,9 @@ Users *ExtractUsers()
 }
 
 // Extract acounts from the file:
-void ExtractAcounts(Users *table)
+Users *ExtractAcounts(Users **table)
 {
     char *data = ReadFile("data/records.txt");
-    // printf("%s", data);
     if (!data || strlen(data) == 0)
     {
         printf("Lack of data in the file!!!");
@@ -196,7 +195,6 @@ void ExtractAcounts(Users *table)
     char acountType[11];
     int ind = 1;
     char userName[50];
-
     size_t bufferSize = 55;
     char *str;
     str = (char *)malloc(bufferSize * sizeof(char));
@@ -205,9 +203,9 @@ void ExtractAcounts(Users *table)
         printf("Memmory allocation for a buffer has failed!!!");
         exit(1);
     }
+    str[0] = '\0';
     for (int i = 0; i < strlen(data); i++)
     {
-
         if (data[i] == ' ' || data[i] == '\n')
         {
             switch (ind)
@@ -216,7 +214,7 @@ void ExtractAcounts(Users *table)
                 acountId = Atoi(str);
                 break;
             case 2:
-                break;;
+                break;
             case 3:
                 strcpy(userName, str);
                 break;
@@ -229,6 +227,7 @@ void ExtractAcounts(Users *table)
                 break;
             case 6:
                 acountNumber = Atoi(str);
+                break;
             case 7:
                 balance = Atof(str);
                 break;
@@ -236,20 +235,23 @@ void ExtractAcounts(Users *table)
                 strcpy(acountType, str);
                 break;
             }
-            str[0] = '\0';
             if (data[i] == '\n')
             {
-                AcountCreation(table, userName, acountId, creationDate, country, acountNumber, balance, acountType);
+                Acount* acount = NewAcount(acountId, creationDate, country, acountNumber, balance, acountType);
+                CreateAcount(&(*table)->HashedUsers[HashedIndex(userName)]->Acounts, acount);
                 ind = 1;
             }
             else
             {
                 ind++;
             }
+            str[0] = '\0';
         }
         else
         {
+            // Append the curent character to the sub string:
             strncat(str, &data[i], 1);
         }
     }
+    return *table;
 }

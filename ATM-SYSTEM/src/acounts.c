@@ -13,10 +13,13 @@ Acount *NewAcount(int acountId, char *date, char *country, int acountNumber, flo
         exit(1);
     }
     acount->AcountId = acountId;
+    acount->CreationDate = malloc(strlen(date));
     strcpy(acount->CreationDate, date);
+    acount->Country = malloc(strlen(country));
     strcpy(acount->Country, country);
     acount->AcountNumber = acountNumber;
     acount->Balance = balance;
+    acount->AcountType = malloc(strlen(acountType));
     strcpy(acount->AcountType, acountType);
     acount->Next = NULL;
     return acount;
@@ -116,5 +119,5 @@ void AcountsWriter(Users *table, char* mode, User *Profile)
 
 // Display all the acounts of the logged in user:
 void CheckUserAcounts(Users *table, User* Profile) {
-
+     DisplayUserAcounts(table, Profile->UserName);
 }
