@@ -13,6 +13,7 @@ typedef struct Acount
     int AcountId;
     char *CreationDate;
     char *Country;
+    char *Phone;
     int AcountNumber;
     float Balance;
     char *AcountType;
@@ -23,8 +24,8 @@ typedef struct Acount
 typedef struct User
 {
     int Id;
-    char UserName[50];
-    char Password[20];
+    char *UserName;
+    char *Password;
     Acount *Acounts;
     struct User *Next;
 } User;
@@ -51,16 +52,19 @@ void AcountDeletion(Users *table, char *userName, int acountId);
 void DisplayUsers(User *Node);
 void Login(Users *table);
 User *LogedUser(User *Node, char *userName);
+User *SearchUser(User *Node, char *pattern);
 
 // Invite the logic related to the acount to the scope:
-Acount *NewAcount(int acountId, char *date, char *country, int acountNumber, float balance, char *acountType);
+Acount *NewAcount(int acountId, char *date, char *country, char *phone, int acountNumber, float balance, char *acountType);
 void CreateAcount(Acount **Node, Acount *newAcount);
-void AcountCreation(Users *table, char *userName, int acountId, char *date, char *country, int acountNumber, float balance, char *acountType);
+void AcountCreation(Users *table, char *userName, int acountId, char *date, char *country, char *phone, int acountNumber, float balance, char *acountType);
 void DisplayAcounts(Acount *Node);
-void DeleteAcount(Acount **Node, int id);
+bool DeleteAcount(Acount **Node, int id); // This is the function helper for deletinh an acount:
 void CreateNewAcount(Users *table, User *Profile);
 void AcountsWriter(Users *table, char *mode, User *Profile);
 void CheckUserAcounts(Users *table, User *Profile);
+void DeleteAcountById(Users *table, User* Profile);
+void UpdateAcount(Users *table, User* Profile);
 
 // Calling the system functionalies to the scope:
 void InitialMenu(Users *table);
@@ -71,7 +75,7 @@ void UserRegistration(Users *table);
 void WritingToFile(const char *filePath, const char *mode, const char *string);
 char *ReadFile(const char *filePath);
 void AppendAcount(User *user, Acount *Node);
-void AppendNewUser(User *user);
+void AppendNewUser(User *user, char* userName);
 Users *ExtractUsers();
 Users *ExtractAcounts(Users **table);
 

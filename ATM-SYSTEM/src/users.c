@@ -16,7 +16,9 @@ User *NewUser(int id, char *userName, char *password)
         exit(1);
     }
     user->Id = id;
+    user->UserName = malloc(strlen(userName) + 1);
     strcpy(user->UserName, userName);
+    user->Password = malloc(strlen(password) + 1);
     strcpy(user->Password, password);
     user->Acounts = NULL;
     user->Next = NULL;
@@ -49,29 +51,32 @@ int HashedIndex(char *key)
         val += key[i] << 8;
         i++;
     }
-    printf("The index is: %ld\n", val % TABLE_SIZE);
     return val % TABLE_SIZE;
 }
 
 // Insert a new user in the hah table:
 void InsertNewUser(User **Node, User *user)
 {
-    if ((*Node) != NULL && UserExists((*Node)->UserName, user->UserName))
-    {
-        printf("Oops user already exists\n");
-        exit(1);
-    }
     if ((*Node) == NULL)
     {
         *Node = user;
         return;
     }
-    else if ((*Node)->Next == NULL)
+
+    User *Prev = NULL;
+    User *Current = (*Node);
+    while (Current != NULL)
     {
-        (*Node)->Next = user;
-        return;
+        if (strcmp(user->UserName, Current->UserName) == 0)
+        {
+            printf("The user %s is the same as user %s\n", user->UserName, Current->UserName);
+            printf("Oops user already exists or \n");
+            exit(1);
+        }
+        Prev = Current;
+        Current = Current->Next;
     }
-    InsertNewUser(&(*Node)->Next, user);
+    Prev->Next = user;
 }
 
 // Check if the user already exists:
@@ -91,15 +96,15 @@ bool UserExists(char *input, char *userName)
 // Apply the insertion:
 void Insertion(Users *table, int id, char *userName, char *password)
 {
+
     User *user = NewUser(id, userName, password);
-    printf("%s\n", user->UserName);
     InsertNewUser(&table->HashedUsers[HashedIndex(userName)], user);
 }
 
 // Create a new acount:
-void AcountCreation(Users *table, char *userName, int acountId, char *date, char *country, int acountNumber, float balance, char *acountType)
+void AcountCreation(Users *table, char *userName, int acountId, char *date, char *country, char* phone, int acountNumber, float balance, char *acountType)
 {
-    Acount *acount = NewAcount(acountId, date, country, acountNumber, balance, acountType);
+    Acount *acount = NewAcount(acountId, date, country, phone, acountNumber, balance, acountType);
     CreateAcount(&table->HashedUsers[HashedIndex(userName)]->Acounts, acount);
 }
 
@@ -124,6 +129,7 @@ void DisplayUsers(User *Node)
         return;
     }
     printf("The user id is: %d, his user name is %s and his password is: %s \n", Node->Id, Node->UserName, Node->Password);
+    DisplayAcounts(Node->Acounts);
     DisplayUsers(Node->Next);
 }
 
@@ -162,7 +168,7 @@ void Login(Users *table)
     {
         printf("Enter your password: ");
         scanf("%s", password);
-         printf("Your password is: %s\n", password);
+        printf("Your password is: %s\n", password);
         if (strcmp(logedUser->Password, password) == 0)
         {
             printf("Connecting...\n");
@@ -175,10 +181,21 @@ void Login(Users *table)
     }
 }
 
-// Update a specific acount:
-
+// Search for a user:
+User *SearchUser(User *Node, char *pattern)
+{
+    if (Node == NULL)
+    {
+        printf("User does'nt exist!!!\n");
+        exit(1);
+    }
+    if (strcmp(Node->UserName, pattern) == 0)
+    {
+        return Node;
+    }
+    return SearchUser(Node->Next, pattern);
+}
 
 // Delete a specific acount:
 
-
-// 
+//

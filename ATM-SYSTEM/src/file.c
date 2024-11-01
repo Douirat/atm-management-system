@@ -21,8 +21,6 @@ void WritingToFile(const char *filePath, const char *mode, const char *string)
 
     // Close the file
     fclose(filePointer);
-
-    printf("Data appended to file successfully.\n");
 }
 
 // Read data from a file:
@@ -100,13 +98,9 @@ void AppendAcount(User *user, Acount *Node)
 }
 
 // Insert data related to a new user to the file:
-void AppendNewUser(User *user)
+void AppendNewUser(User *user, char *userName)
 {
-    if (user == NULL)
-    {
-        printf("User doesn't exist\n");
-        exit(1);
-    }
+    User *Node = SearchUser(user, userName);
     size_t buffuerSize = 255;
     char *str = (char *)malloc(buffuerSize * sizeof(char));
     if (!str)
@@ -114,8 +108,9 @@ void AppendNewUser(User *user)
         printf("Memmory allocation for the user data buffer has failed!!!\n");
         exit(10);
     }
+    printf("The user name is: %s and the password is: %s his id is %d\n", user->UserName, user->Password, user->Id);
     // Concatenate the user data to the baffer:
-    snprintf(str, buffuerSize, "%d %s %s\n", user->Id, user->UserName, user->Password);
+    snprintf(str, buffuerSize, "%d %s %s\n", Node->Id, Node->UserName, Node->Password);
     // write data to the file:
     WritingToFile("data/users.txt", "a", str);
 }
@@ -130,7 +125,7 @@ Users *ExtractUsers()
         printf("Lack of data in the file!!!");
         exit(1);
     }
-
+    printf("%s\n", data);
     int Id;
     char userName[50];
     char password[20];
@@ -159,6 +154,7 @@ Users *ExtractUsers()
             if (data[i] == '\n')
             {
                 // End of line, insert record
+
                 Insertion(table, Id, userName, password);
                 ind = 1; // Reset field indicator for the next user
             }
@@ -190,6 +186,7 @@ Users *ExtractAcounts(Users **table)
     int acountId;
     char creationDate[11];
     char country[50];
+    char phone[11];
     int acountNumber;
     float balance;
     char acountType[11];
@@ -226,18 +223,21 @@ Users *ExtractAcounts(Users **table)
                 strcpy(country, str);
                 break;
             case 6:
-                acountNumber = Atoi(str);
+                strcpy(phone, str);
                 break;
             case 7:
-                balance = Atof(str);
+                acountNumber = Atoi(str);
                 break;
             case 8:
+                balance = Atof(str);
+                break;
+            case 9:
                 strcpy(acountType, str);
                 break;
             }
             if (data[i] == '\n')
             {
-                Acount* acount = NewAcount(acountId, creationDate, country, acountNumber, balance, acountType);
+                Acount *acount = NewAcount(acountId, creationDate, country, phone, acountNumber, balance, acountType);
                 CreateAcount(&(*table)->HashedUsers[HashedIndex(userName)]->Acounts, acount);
                 ind = 1;
             }

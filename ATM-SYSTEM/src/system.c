@@ -60,11 +60,11 @@ void ProfileMenu(Users *table, User *Profile)
     switch (Option)
     {
     case 1:
-        printf("The user wants to create a new acount\n");
         CreateNewAcount(table, Profile);
         return;
     case 2:
         printf("The user wants to update his acounts\n");
+        UpdateAcount(table, Profile);
         return;
     case 3:
         printf("The user wants to check all his acounts:\n");
@@ -75,6 +75,7 @@ void ProfileMenu(Users *table, User *Profile)
         return;
     case 5:
         printf("The user wants to Delete an acount\n");
+        DeleteAcountById(table, Profile);
         return;
     case 6:
         printf("The user wants to transfer ownership\n");
@@ -99,8 +100,7 @@ void UserRegistration(Users* table)
     scanf("%s", userName);
      printf("Enter your password: ");
     scanf("%s", password);
-    printf("The user name is: %s and the password is: %s his id is %d\n", userName, password, id);
     Insertion(table, id, userName, password);
-    AppendNewUser(table->HashedUsers[HashedIndex(userName)]);
+    AppendNewUser(table->HashedUsers[HashedIndex(userName)], userName);
 }
 
