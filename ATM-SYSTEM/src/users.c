@@ -104,8 +104,19 @@ void Insertion(Users *table, int id, char *userName, char *password)
 // Create a new acount:
 void AcountCreation(Users *table, char *userName, int acountId, char *date, char *country, char* phone, int acountNumber, float balance, char *acountType)
 {
+    User *logedIn = LogedUser(table->HashedUsers[HashedIndex(userName)], userName);
+     printf("The user name is%s\n", logedIn->UserName);
     Acount *acount = NewAcount(acountId, date, country, phone, acountNumber, balance, acountType);
-    CreateAcount(&table->HashedUsers[HashedIndex(userName)]->Acounts, acount);
+    // CreateAcount(&table->HashedUsers[HashedIndex(userName)]->Acounts, acount);
+    if (logedIn->Acounts == NULL) {
+        logedIn->Acounts = acount;
+        return;
+    }
+    Acount* Temp = logedIn->Acounts;
+    while(Temp->Next != NULL) {
+        Temp = Temp->Next;
+    }
+    Temp->Next = acount;
 }
 
 // Display All the acounts that are :
@@ -195,7 +206,3 @@ User *SearchUser(User *Node, char *pattern)
     }
     return SearchUser(Node->Next, pattern);
 }
-
-// Delete a specific acount:
-
-//

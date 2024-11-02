@@ -75,16 +75,17 @@ void AppendAcount(User *user, Acount *Node)
     str[0] = '\0';
 
     // Safely concatenate account data into the buffer
-    int err = snprintf(str, bufferSize, "%d %d %s %s %s %d %.2f %s\n",
+    int err = snprintf(str, bufferSize, "%d %d %s %s %s %s %d %.2f %s\n",
                        Node->AcountId,
                        user->Id,
                        user->UserName,
                        Node->CreationDate,
                        Node->Country,
+                       Node->Phone,
                        Node->AcountNumber,
                        Node->Balance,
                        Node->AcountType);
-
+    // printf("%s\n", str);
     if (err == 1)
     {
         printf("Error converting data\n");
@@ -92,6 +93,7 @@ void AppendAcount(User *user, Acount *Node)
     }
     // Call the function to write the string to the file
     WritingToFile("data/records.txt", "a", str);
+    str[0]= '\0';
     free(str);
     // Recursively process the next account node
     AppendAcount(user, Node->Next);
@@ -181,7 +183,6 @@ Users *ExtractAcounts(Users **table)
     if (!data || strlen(data) == 0)
     {
         printf("Lack of data in the file!!!");
-        exit(1);
     }
     int acountId;
     char creationDate[11];
@@ -237,8 +238,9 @@ Users *ExtractAcounts(Users **table)
             }
             if (data[i] == '\n')
             {
-                Acount *acount = NewAcount(acountId, creationDate, country, phone, acountNumber, balance, acountType);
-                CreateAcount(&(*table)->HashedUsers[HashedIndex(userName)]->Acounts, acount);
+                // Acount *acount = NewAcount(acountId, creationDate, country, phone, acountNumber, balance, acountType);
+                printf("The issue with the user name: %s\n", userName);
+                AcountCreation(*table, userName, acountId, creationDate, country, phone, acountNumber, balance, acountType);
                 ind = 1;
             }
             else

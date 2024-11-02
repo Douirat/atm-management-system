@@ -19,7 +19,7 @@ Acount *NewAcount(int acountId, char *date, char *country, char *phone, int acou
     acount->Country = malloc(strlen(country) + 1);
     strcpy(acount->Country, country);
     acount->Phone = malloc(strlen(phone) + 1);
-    strcpy(acount->Phone, country);
+    strcpy(acount->Phone, phone);
     acount->AcountNumber = acountNumber;
     acount->Balance = balance;
     acount->AcountType = malloc(strlen(acountType) + 1);
@@ -30,8 +30,7 @@ Acount *NewAcount(int acountId, char *date, char *country, char *phone, int acou
 
 // When the User Creates an acount an insertion happens:
 void CreateAcount(Acount **Node, Acount *newAcount)
-{
-    if ((*Node) == NULL)
+{    if ((*Node) == NULL)
     {
         (*Node) = newAcount;
         return;
@@ -95,6 +94,7 @@ bool DeleteAcount(Acount **Node, int id)
 
 void CreateNewAcount(Users *table, User *Profile)
 {
+    printf("%s\n", Profile->UserName);
     int acountId;
     char date[11];
     char country[50];
@@ -125,14 +125,19 @@ void CreateNewAcount(Users *table, User *Profile)
     scanf("%s", acountType);
 
     AcountCreation(table, Profile->UserName, acountId, date, country, phone, acountNumber, balance, acountType);
-    AcountsWriter(table, "a", Profile);
-    ProfileMenu(table, Profile);
-}
+    WritingToFile("data/records.txt", "w", "");
 
-// The handler of inserting a new acount in the file:
-void AcountsWriter(Users *table, char *mode, User *Profile)
-{
-    AppendAcount(table->HashedUsers[HashedIndex(Profile->UserName)], table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts);
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        User *Temp = table->HashedUsers[i];
+        while (Temp != NULL)
+        {
+            AppendAcount(Temp, Temp->Acounts);
+            Temp = Temp->Next;
+        }
+    }
+
+    ProfileMenu(table, Profile);
 }
 
 // Display all the acounts of the logged in user:
@@ -195,6 +200,7 @@ void DeleteAcountById(Users *table, User *Profile)
 // Update an ccount based on id:
 void UpdateAcount(Users *table, User *Profile)
 {
+    system("clear");
     int choice;
     int chosen;
     printf("\n\n      -------------------------> [ ... Update ... ] <-------------------------\n\n");
@@ -204,8 +210,10 @@ void UpdateAcount(Users *table, User *Profile)
     printf("         -> [1] Phone number\n");
     printf("         -> [2] Country\n\n");
     scanf("%d", &chosen);
-    char input[11];
+    printf("%d", chosen);
+    char input[20];
     Acount *Temp = Profile->Acounts;
+    bool Updated = false;
     while (Temp != NULL)
     {
         if (Temp->AcountId == choice)
@@ -214,19 +222,48 @@ void UpdateAcount(Users *table, User *Profile)
             {
                 printf("\n      ----> Enter the new phone number: ");
                 scanf("%s", input);
+                printf("The input is%d\n", chosen);
                 strcpy(Temp->Phone, input);
                 printf("Your phone number is updated successfully\n");
+                Updated = true;
                 break;
             }
-            else
+            else if (chosen == 2)
             {
                 printf("\n      ----> Enter the new country: ");
                 scanf("%s", input);
                 strcpy(Temp->Country, input);
                 printf("Your phone number is updated successfully\n");
+                Updated = true;
                 break;
+            }
+            else
+            {
+                printf("You only have tow choices");
+                ProfileMenu(table, Profile);
+                return;
             }
         }
         Temp = Temp->Next;
     }
+    system("clear");
+    if (Updated)
+    {
+        WritingToFile("data/records.txt", "w", "");
+        for (int i = 0; i < TABLE_SIZE; i++)
+        {
+            User *temp = table->HashedUsers[i];
+            while (temp != NULL)
+            {
+                AppendAcount(temp, temp->Acounts);
+                temp = temp->Next;
+            }
+        }
+    }
+    else
+    {
+        printf("\n\n\n         ------------------>> Acount with the id %d is not found!\n\n\n", choice);
+    }
+    sleep(2);
+    ProfileMenu(table, Profile);
 }

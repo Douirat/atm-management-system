@@ -61,7 +61,6 @@ void AcountCreation(Users *table, char *userName, int acountId, char *date, char
 void DisplayAcounts(Acount *Node);
 bool DeleteAcount(Acount **Node, int id); // This is the function helper for deletinh an acount:
 void CreateNewAcount(Users *table, User *Profile);
-void AcountsWriter(Users *table, char *mode, User *Profile);
 void CheckUserAcounts(Users *table, User *Profile);
 void DeleteAcountById(Users *table, User* Profile);
 void UpdateAcount(Users *table, User* Profile);
