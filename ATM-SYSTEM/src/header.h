@@ -37,6 +37,7 @@ typedef struct Users
     User *HashedUsers[TABLE_SIZE];
 } Users;
 
+
 // The main function:
 int main();
 
@@ -47,7 +48,6 @@ int HashedIndex(char *key);
 void InsertNewUser(User **Node, User *user);
 void Insertion(Users *table, int id, char *userName, char *password);
 bool UserExists(char *input, char *userName);
-void DisplayUserAcounts(Users *table, char *userName);
 void AcountDeletion(Users *table, char *userName, int acountId);
 void DisplayUsers(User *Node);
 void Login(Users *table);
@@ -64,6 +64,9 @@ void CreateNewAcount(Users *table, User *Profile);
 void CheckUserAcounts(Users *table, User *Profile);
 void DeleteAcountById(Users *table, User* Profile);
 void UpdateAcount(Users *table, User* Profile);
+void MakeTransaction(Users* table, User* Profile);
+Acount *ChosenAcount(Acount *Node, int number);
+void CheckAcountDetails(Users* table, User* Profile);
 
 // Calling the system functionalies to the scope:
 void InitialMenu(Users *table);

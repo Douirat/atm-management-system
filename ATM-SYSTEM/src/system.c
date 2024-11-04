@@ -5,9 +5,8 @@
 #include <unistd.h>
 #include "header.h"
 
-
 // Declare the home page menu function:
-void InitialMenu(Users* table)
+void InitialMenu(Users *table)
 {
     int Option;
     system("clear");
@@ -23,7 +22,7 @@ void InitialMenu(Users* table)
     {
     case 1:
         printf("The user want to login\n");
-         Login(table);
+        Login(table);
         //  ProfileMenu(usersTable, usersTable->HashedUsers[HashedIndex("BenDoe")]);
         break;
     case 2:
@@ -50,10 +49,11 @@ void ProfileMenu(Users *table, User *Profile)
     printf("\n\t\t[1]- Create a new account\n");
     printf("\n\t\t[2]- Update account information\n");
     printf("\n\t\t[3]- Check existing accounts\n");
-    printf("\n\t\t[4]- Make Transaction\n");
-    printf("\n\t\t[5]- Remove existing account\n");
-    printf("\n\t\t[6]- Transfer ownership\n");
-    printf("\n\t\t[7]- Exit\n\n");
+    printf("\n\t\t[4]- Check the details of owned accounts:\n");
+    printf("\n\t\t[5]- Make Transaction\n");
+    printf("\n\t\t[6]- Remove existing account\n");
+    printf("\n\t\t[7]- Transfer ownership\n");
+    printf("\n\t\t[8]- Exit\n\n");
     printf("Pleaser enter your choice here: ");
     scanf("%d", &Option);
 
@@ -63,31 +63,31 @@ void ProfileMenu(Users *table, User *Profile)
         CreateNewAcount(table, Profile);
         return;
     case 2:
-        printf("The user wants to update his acounts\n");
         UpdateAcount(table, Profile);
         return;
     case 3:
-        printf("The user wants to check all his acounts:\n");
         CheckUserAcounts(table, Profile);
         return;
     case 4:
-        printf("The user wants to make a transaction:\n");
+        CheckAcountDetails(table, Profile);
         return;
     case 5:
-        printf("The user wants to Delete an acount\n");
-        DeleteAcountById(table, Profile);
+        MakeTransaction(table, Profile);
         return;
     case 6:
-        printf("The user wants to transfer ownership\n");
+        DeleteAcountById(table, Profile);
         return;
     case 7:
+        printf("The user wants to transfer ownership\n");
+        return;
+    case 8:
         printf("The user wants to log out!!!\n");
         return;
     }
 }
 
 // Handle a new user registration:
-void UserRegistration(Users* table)
+void UserRegistration(Users *table)
 {
     int id;
     char userName[50];
@@ -98,9 +98,8 @@ void UserRegistration(Users* table)
     scanf("%d", &id);
     printf("Enter your user name: ");
     scanf("%s", userName);
-     printf("Enter your password: ");
+    printf("Enter your password: ");
     scanf("%s", password);
     Insertion(table, id, userName, password);
     AppendNewUser(table->HashedUsers[HashedIndex(userName)], userName);
 }
-

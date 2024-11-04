@@ -30,7 +30,8 @@ Acount *NewAcount(int acountId, char *date, char *country, char *phone, int acou
 
 // When the User Creates an acount an insertion happens:
 void CreateAcount(Acount **Node, Acount *newAcount)
-{    if ((*Node) == NULL)
+{
+    if ((*Node) == NULL)
     {
         (*Node) = newAcount;
         return;
@@ -144,7 +145,7 @@ void CreateNewAcount(Users *table, User *Profile)
 void CheckUserAcounts(Users *table, User *Profile)
 {
     system("clear");
-    DisplayUserAcounts(table, Profile->UserName);
+    DisplayAcounts(Profile->Acounts);
     int choice;
     printf("\n\n    ----------->> Enter [1] to go to the Home page and [0] to Logout\n\n");
     scanf("%d", &choice);                  // Use &choice to pass the address
@@ -266,4 +267,91 @@ void UpdateAcount(Users *table, User *Profile)
     }
     sleep(2);
     ProfileMenu(table, Profile);
+}
+
+// Make a transaction:
+void MakeTransaction(Users *table, User *Profile)
+{
+    int number;
+    int choice;
+    float amount;
+    bool changed = false;
+    printf("Enter the number of your acount: \nhere: ");
+    scanf("%d", &number);
+    Acount *acount = ChosenAcount(Profile->Acounts, number);
+    if (acount == NULL)
+    {
+        printf("Acount not found!\n");
+        sleep(2);
+        ProfileMenu(table, Profile);
+    }
+    printf("Do you want to: \n ------> [1] withdraw: \n ------> [2] Deposit: \n");
+    scanf("%d", &choice);
+    if (choice == 1)
+    {
+        printf("Enter the amount you want to withdraw\n here: ");
+        scanf("%f", &amount);
+        if (amount > acount->Balance)
+        {
+            printf("The amount you entered is unavailable!\n");
+            sleep(2);
+        }
+        else
+        {
+            acount->Balance -= amount;
+            changed = true;
+        }
+    }
+    else if (choice == 2)
+    {
+        printf("Enter the amount you want to withdraw\n here: ");
+        scanf("%f", &amount);
+        acount->Balance += amount;
+        changed = true;
+    }
+    else
+    {
+        printf("Enter a valid choice!\n");
+        sleep(2);
+    }
+    printf("The acount number is: %d and the credit is: %f\n", acount->AcountNumber, acount->Balance);
+    if (changed == true)
+    {
+        WritingToFile("data/records.txt", "w", "");
+        for (int i = 0; i < TABLE_SIZE; i++)
+        {
+            User *temp = table->HashedUsers[i];
+            while (temp != NULL)
+            {
+                AppendAcount(temp, temp->Acounts);
+                temp = temp->Next;
+            }
+        }
+    }
+    else
+    {
+        printf("something went wrong!!!");
+    }
+    sleep(6);
+    ProfileMenu(table, Profile);
+}
+
+// Extract acount Based on acount number:
+Acount *ChosenAcount(Acount *Node, int number)
+{
+    if (Node == NULL)
+    {
+        return NULL;
+    }
+    else if (Node->AcountNumber == number)
+    {
+        return Node;
+    }
+    return ChosenAcount(Node->Next, number);
+}
+
+// Checking the details existing acounts:
+void CheckAcountDetails(Users *table, User *Profile)
+{
+    // we left it here for next time!!!!
 }
