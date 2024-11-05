@@ -23,7 +23,6 @@ void InitialMenu(Users *table)
     case 1:
         printf("The user want to login\n");
         Login(table);
-        //  ProfileMenu(usersTable, usersTable->HashedUsers[HashedIndex("BenDoe")]);
         break;
     case 2:
         printf("The user wants to register\n");
@@ -54,7 +53,7 @@ void ProfileMenu(Users *table, User *Profile)
     printf("\n\t\t[6]- Remove existing account\n");
     printf("\n\t\t[7]- Transfer ownership\n");
     printf("\n\t\t[8]- Exit\n\n");
-    printf("Pleaser enter your choice here: ");
+    printf("-------------> Pleaser enter your choice: \n        --------> Here: ");
     scanf("%d", &Option);
 
     switch (Option)
@@ -79,6 +78,7 @@ void ProfileMenu(Users *table, User *Profile)
         return;
     case 7:
         printf("The user wants to transfer ownership\n");
+        TransferOwnership(table, Profile);
         return;
     case 8:
         printf("The user wants to log out!!!\n");

@@ -67,6 +67,7 @@ void UpdateAcount(Users *table, User* Profile);
 void MakeTransaction(Users* table, User* Profile);
 Acount *ChosenAcount(Acount *Node, int number);
 void CheckAcountDetails(Users* table, User* Profile);
+void TransferOwnership(Users* table, User* Profile);
 
 // Calling the system functionalies to the scope:
 void InitialMenu(Users *table);

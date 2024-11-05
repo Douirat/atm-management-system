@@ -148,13 +148,13 @@ void CheckUserAcounts(Users *table, User *Profile)
     DisplayAcounts(Profile->Acounts);
     int choice;
     printf("\n\n    ----------->> Enter [1] to go to the Home page and [0] to Logout\n\n");
-    scanf("%d", &choice);                  // Use &choice to pass the address
-    printf("The choice is: %d\n", choice); // Print the value of choice
+    scanf("%d", &choice);
+    printf("The choice is: %d\n", choice);
 
     if (choice == 1)
     {
         // Call ProfileMenu function with appropriate arguments
-        ProfileMenu(table, Profile); // Uncomment this when using ProfileMenu
+        ProfileMenu(table, Profile);
     }
     else if (choice == 0)
     {
@@ -164,12 +164,19 @@ void CheckUserAcounts(Users *table, User *Profile)
     else
     {
         printf("Invalid choice.\n");
+        ProfileMenu(table, Profile);
     }
 }
 
 // Delete an acount based on the id:
 void DeleteAcountById(Users *table, User *Profile)
 {
+    if (Profile->Acounts == NULL)
+    {
+        printf("No acounts to delete!!!");
+        ProfileMenu(table, Profile);
+    }
+    system("clear");
     int choice;
     printf("\n\n--------> Enter the edentification [ID] of the acount you want to delete <--------\n\n");
     printf("Acount id: ");
@@ -195,6 +202,7 @@ void DeleteAcountById(Users *table, User *Profile)
     {
         printf("Acount not found!!!\n");
         sleep(1);
+        ProfileMenu(table, Profile);
     }
 }
 
@@ -202,6 +210,12 @@ void DeleteAcountById(Users *table, User *Profile)
 void UpdateAcount(Users *table, User *Profile)
 {
     system("clear");
+    Acount *Temp = Profile->Acounts;
+    if (Temp == NULL)
+    {
+        printf("No accounts to update!");
+        ProfileMenu(table, Profile);
+    }
     int choice;
     int chosen;
     printf("\n\n      -------------------------> [ ... Update ... ] <-------------------------\n\n");
@@ -213,7 +227,6 @@ void UpdateAcount(Users *table, User *Profile)
     scanf("%d", &chosen);
     printf("%d", chosen);
     char input[20];
-    Acount *Temp = Profile->Acounts;
     bool Updated = false;
     while (Temp != NULL)
     {
@@ -272,6 +285,7 @@ void UpdateAcount(Users *table, User *Profile)
 // Make a transaction:
 void MakeTransaction(Users *table, User *Profile)
 {
+    system("clear");
     int number;
     int choice;
     float amount;
@@ -350,8 +364,80 @@ Acount *ChosenAcount(Acount *Node, int number)
     return ChosenAcount(Node->Next, number);
 }
 
+// Extract the percetage:
+float IntrestRate(float balance, float interest)
+{
+    return (interest / balance) * 100.0;
+}
+
+// Extract creation date:
+char *CreationDay(char *date)
+{
+    // Allocate space for 3 characters: 2 for the day and 1 for the null terminator
+    char *fragment = (char *)malloc(3 * sizeof(char));
+    if (fragment == NULL)
+    {
+        return NULL; // Return NULL if memory allocation fails
+    }
+
+    // Copy the first two characters from 'date' to 'fragment'
+    strncpy(fragment, date, 2);
+
+    // Add a null terminator at the end
+    fragment[2] = '\0';
+
+    return fragment;
+}
 // Checking the details existing acounts:
 void CheckAcountDetails(Users *table, User *Profile)
 {
-    // we left it here for next time!!!!
+    system("clear");
+    int number;
+    printf("\n\n\n-------------------> Enter the acount number: \n              -----> Here: ");
+    scanf("%d", &number);
+    Acount *Node = ChosenAcount(Profile->Acounts, number);
+    if (Node == NULL)
+    {
+        printf("Acount Not found!!!");
+        ProfileMenu(table, Profile);
+    }
+    system("clear");
+    printf("\n\n\n                  ----------------------->> ... <<-----------------------\n\n");
+    printf("                     -----> Acount id: %d\n", Node->AcountId);
+    printf("                     -----> Creation Date: %s\n", Node->CreationDate);
+    printf("                     -----> The country: %s\n", Node->Country);
+    printf("                     -----> The Phone: %s\n", Node->Phone);
+    printf("                     -----> Acount Number: %d\n", Node->AcountNumber);
+    printf("                     -----> Balance: $%f\n", Node->Balance);
+    printf("                     -----> Acount type: %s\n\n", Node->AcountType);
+    if (strcmp(Node->AcountType, "Saving") == 0)
+    {
+        printf("You will recieve %f of 7%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 7.0), CreationDay(Node->CreationDate));
+    }
+    else if (strcmp(Node->AcountType, "Current") == 0)
+    {
+        printf("\n\nYou wont be recieving any interests!!\n\n");
+    }
+    else if (strcmp(Node->AcountType, "Fixed01") == 0)
+    {
+        printf("You will recieve %f of 4%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 4.0), CreationDay(Node->CreationDate));
+    }
+    else if (strcmp(Node->AcountType, "Fixed02") == 0)
+    {
+        printf("You will recieve %f of 5%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 5.0), CreationDay(Node->CreationDate));
+    }
+    else if (strcmp(Node->AcountType, "Fixed03"))
+    {
+        printf("You will recieve %f of 8%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 8.0), CreationDay(Node->CreationDate));
+    }
+    else
+    {
+        printf("Unrelated data!!!\n");
+    }
+}
+
+// Transfer the ownership of an acount from a user to another:
+void TransferOwnership(Users *table, User *Profile)
+{
+    // We have lefted here for tommorrow!!!
 }

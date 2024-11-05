@@ -93,7 +93,7 @@ void AppendAcount(User *user, Acount *Node)
     }
     // Call the function to write the string to the file
     WritingToFile("data/records.txt", "a", str);
-    str[0]= '\0';
+    str[0] = '\0';
     free(str);
     // Recursively process the next account node
     AppendAcount(user, Node->Next);
@@ -238,8 +238,6 @@ Users *ExtractAcounts(Users **table)
             }
             if (data[i] == '\n')
             {
-                // Acount *acount = NewAcount(acountId, creationDate, country, phone, acountNumber, balance, acountType);
-                printf("The issue with the user name: %s\n", userName);
                 AcountCreation(*table, userName, acountId, creationDate, country, phone, acountNumber, balance, acountType);
                 ind = 1;
             }

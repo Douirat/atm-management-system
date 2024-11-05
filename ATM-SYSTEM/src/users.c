@@ -109,9 +109,7 @@ void Insertion(Users *table, int id, char *userName, char *password)
 void AcountCreation(Users *table, char *userName, int acountId, char *date, char *country, char *phone, int acountNumber, float balance, char *acountType)
 {
     User *logedIn = LogedUser(table->HashedUsers[HashedIndex(userName)], userName);
-    printf("The user name is%s\n", logedIn->UserName);
     Acount *acount = NewAcount(acountId, date, country, phone, acountNumber, balance, acountType);
-    // CreateAcount(&table->HashedUsers[HashedIndex(userName)]->Acounts, acount);
     if (logedIn->Acounts == NULL)
     {
         logedIn->Acounts = acount;
@@ -125,12 +123,6 @@ void AcountCreation(Users *table, char *userName, int acountId, char *date, char
     Temp->Next = acount;
 }
 
-// Display All the acounts that are :
-// void DisplayUserAcounts(Users *table, char *userName)
-// {
-//     printf("\n\n      ------------------->> [[ ... Here is a list of all your acounts mrs %s ... ]] <-------------------\n\n", userName);
-//     DisplayAcounts(Session->Acounts);
-// }
 
 // Delete a specific acount based on its id:
 void AcountDeletion(Users *table, char *userName, int acountId)
