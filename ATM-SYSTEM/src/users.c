@@ -196,8 +196,7 @@ User *SearchUser(User *Node, char *pattern)
 {
     if (Node == NULL)
     {
-        printf("User does'nt exist!!!\n");
-        exit(1);
+        return NULL;
     }
     if (strcmp(Node->UserName, pattern) == 0)
     {

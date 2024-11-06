@@ -77,7 +77,6 @@ void ProfileMenu(Users *table, User *Profile)
         DeleteAcountById(table, Profile);
         return;
     case 7:
-        printf("The user wants to transfer ownership\n");
         TransferOwnership(table, Profile);
         return;
     case 8:
@@ -102,4 +101,5 @@ void UserRegistration(Users *table)
     scanf("%s", password);
     Insertion(table, id, userName, password);
     AppendNewUser(table->HashedUsers[HashedIndex(userName)], userName);
+    Login(table);
 }

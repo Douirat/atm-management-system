@@ -108,10 +108,9 @@ void AppendNewUser(User *user, char *userName)
     if (!str)
     {
         printf("Memmory allocation for the user data buffer has failed!!!\n");
-        exit(10);
+        exit(1);
     }
-    printf("The user name is: %s and the password is: %s his id is %d\n", user->UserName, user->Password, user->Id);
-    // Concatenate the user data to the baffer:
+    // Concatenate the user data to the buffer:
     snprintf(str, buffuerSize, "%d %s %s\n", Node->Id, Node->UserName, Node->Password);
     // write data to the file:
     WritingToFile("data/users.txt", "a", str);

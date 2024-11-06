@@ -95,6 +95,7 @@ bool DeleteAcount(Acount **Node, int id)
 
 void CreateNewAcount(Users *table, User *Profile)
 {
+    system("clear");
     printf("%s\n", Profile->UserName);
     int acountId;
     char date[11];
@@ -112,9 +113,9 @@ void CreateNewAcount(Users *table, User *Profile)
     scanf("%s", country);
     printf("\nEnter your phone number: ");
     scanf("%s", phone);
-    printf("\nEnter your acount number:");
+    printf("\nEnter your acount number: ");
     scanf("%d", &acountNumber);
-    printf("\nEnter your the amount you want to deposit:");
+    printf("\nEnter your the amount you want to deposit: ");
     scanf("%f", &balance);
     printf("\n         ------> Choose a type: ");
     printf("\n              -> Saving:");
@@ -164,7 +165,8 @@ void CheckUserAcounts(Users *table, User *Profile)
     else
     {
         printf("Invalid choice.\n");
-        ProfileMenu(table, Profile);
+        // ProfileMenu(table, Profile);
+        exit(1);
     }
 }
 
@@ -292,7 +294,7 @@ void MakeTransaction(Users *table, User *Profile)
     bool changed = false;
     printf("Enter the number of your acount: \nhere: ");
     scanf("%d", &number);
-    Acount *acount = ChosenAcount(Profile->Acounts, number);
+    Acount *acount = ChosenAcount(&Profile->Acounts, number);
     if (acount == NULL)
     {
         printf("Acount not found!\n");
@@ -351,17 +353,17 @@ void MakeTransaction(Users *table, User *Profile)
 }
 
 // Extract acount Based on acount number:
-Acount *ChosenAcount(Acount *Node, int number)
+Acount *ChosenAcount(Acount **Node, int number)
 {
-    if (Node == NULL)
+    if (*(Node) == NULL)
     {
         return NULL;
     }
-    else if (Node->AcountNumber == number)
+    else if ((*Node)->AcountNumber == number)
     {
-        return Node;
+        return (*Node);
     }
-    return ChosenAcount(Node->Next, number);
+    return ChosenAcount(&(*Node)->Next, number);
 }
 
 // Extract the percetage:
@@ -395,7 +397,7 @@ void CheckAcountDetails(Users *table, User *Profile)
     int number;
     printf("\n\n\n-------------------> Enter the acount number: \n              -----> Here: ");
     scanf("%d", &number);
-    Acount *Node = ChosenAcount(Profile->Acounts, number);
+    Acount *Node = ChosenAcount(&Profile->Acounts, number);
     if (Node == NULL)
     {
         printf("Acount Not found!!!");
@@ -434,10 +436,83 @@ void CheckAcountDetails(Users *table, User *Profile)
     {
         printf("Unrelated data!!!\n");
     }
+        int choice;
+    printf("\n\n    ----------->> Enter [1] to go to the Home page and [0] to Logout\n\n");
+    scanf("%d", &choice);
+    printf("The choice is: %d\n", choice);
+
+    if (choice == 1)
+    {
+        // Call ProfileMenu function with appropriate arguments
+        ProfileMenu(table, Profile);
+    }
+    else if (choice == 0)
+    {
+        printf("Logging out...\n");
+        sleep(3);
+    }
+    else
+    {
+        printf("Invalid choice.\n");
+        ProfileMenu(table, Profile);
+    }
 }
 
 // Transfer the ownership of an acount from a user to another:
 void TransferOwnership(Users *table, User *Profile)
 {
-    // We have lefted here for tommorrow!!!
+    system("clear");
+    int accountNumber;
+    char reciever[25];
+    printf("\n\n\n          -------->> Enter the number of the acount you want to transfer: \n          -------->> Here: ");
+    scanf("%d", &accountNumber);
+    printf("\n          -------->> Enter the user name of the reciever: \n          -------->> Here: ");
+    scanf("%s", reciever);
+    User *user = SearchUser(table->HashedUsers[HashedIndex(reciever)], reciever);
+    if (user == NULL)
+    {
+        printf("User not found: \n");
+        ProfileMenu(table, Profile);
+    }
+    bool transferd = false;
+    Acount *Temp = Profile->Acounts;
+    if (Temp == NULL)
+    {
+        printf("No acounts to transfer\n");
+    }
+    else
+    {
+        while (Temp != NULL)
+        {
+            if (Temp->AcountNumber == accountNumber)
+            {
+                AcountCreation(table, user->UserName, Temp->AcountId, Temp->CreationDate, Temp->Country, Temp->Phone, Temp->AcountNumber, Temp->Balance, Temp->AcountType);
+                sleep(3);
+                DeleteAcount(&Profile->Acounts, Temp->AcountId);
+                transferd = true;
+                break;
+            }
+                Temp = Temp->Next;
+            
+        }
+    }
+    if (transferd == true)
+    {   
+        printf("The account is with number %d was transfered to the user: %s\n", accountNumber, reciever);
+        WritingToFile("data/records.txt", "w", "");
+        for (int i = 0; i < TABLE_SIZE; i++)
+        {
+            User *temp = table->HashedUsers[i];
+            while (temp != NULL)
+            {
+                AppendAcount(temp, temp->Acounts);
+                temp = temp->Next;
+            }
+        }
+    }
+    else
+    {
+        printf("something went wrong!!!");
+    }
+    ProfileMenu(table, Profile);
 }

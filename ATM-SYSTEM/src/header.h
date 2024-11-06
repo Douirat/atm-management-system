@@ -65,7 +65,7 @@ void CheckUserAcounts(Users *table, User *Profile);
 void DeleteAcountById(Users *table, User* Profile);
 void UpdateAcount(Users *table, User* Profile);
 void MakeTransaction(Users* table, User* Profile);
-Acount *ChosenAcount(Acount *Node, int number);
+Acount *ChosenAcount(Acount **Node, int number);
 void CheckAcountDetails(Users* table, User* Profile);
 void TransferOwnership(Users* table, User* Profile);
 
