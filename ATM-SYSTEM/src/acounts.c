@@ -436,7 +436,7 @@ void CheckAcountDetails(Users *table, User *Profile)
     {
         printf("Unrelated data!!!\n");
     }
-        int choice;
+    int choice;
     printf("\n\n    ----------->> Enter [1] to go to the Home page and [0] to Logout\n\n");
     scanf("%d", &choice);
     printf("The choice is: %d\n", choice);
@@ -462,6 +462,13 @@ void CheckAcountDetails(Users *table, User *Profile)
 void TransferOwnership(Users *table, User *Profile)
 {
     system("clear");
+    Acount *Temp = Profile->Acounts;
+    if (Temp == NULL)
+    {
+        printf("No acounts to transfer\n");
+        sleep(3);
+        ProfileMenu(table, Profile);
+    }
     int accountNumber;
     char reciever[25];
     printf("\n\n\n          -------->> Enter the number of the acount you want to transfer: \n          -------->> Here: ");
@@ -475,29 +482,22 @@ void TransferOwnership(Users *table, User *Profile)
         ProfileMenu(table, Profile);
     }
     bool transferd = false;
-    Acount *Temp = Profile->Acounts;
-    if (Temp == NULL)
+
+    while (Temp != NULL)
     {
-        printf("No acounts to transfer\n");
-    }
-    else
-    {
-        while (Temp != NULL)
+        if (Temp->AcountNumber == accountNumber)
         {
-            if (Temp->AcountNumber == accountNumber)
-            {
-                AcountCreation(table, user->UserName, Temp->AcountId, Temp->CreationDate, Temp->Country, Temp->Phone, Temp->AcountNumber, Temp->Balance, Temp->AcountType);
-                sleep(3);
-                DeleteAcount(&Profile->Acounts, Temp->AcountId);
-                transferd = true;
-                break;
-            }
-                Temp = Temp->Next;
-            
+            AcountCreation(table, user->UserName, Temp->AcountId, Temp->CreationDate, Temp->Country, Temp->Phone, Temp->AcountNumber, Temp->Balance, Temp->AcountType);
+            sleep(3);
+            DeleteAcount(&Profile->Acounts, Temp->AcountId);
+            transferd = true;
+            break;
         }
+        Temp = Temp->Next;
     }
+
     if (transferd == true)
-    {   
+    {
         printf("The account is with number %d was transfered to the user: %s\n", accountNumber, reciever);
         WritingToFile("data/records.txt", "w", "");
         for (int i = 0; i < TABLE_SIZE; i++)
@@ -514,5 +514,6 @@ void TransferOwnership(Users *table, User *Profile)
     {
         printf("something went wrong!!!");
     }
+    sleep(3);
     ProfileMenu(table, Profile);
 }

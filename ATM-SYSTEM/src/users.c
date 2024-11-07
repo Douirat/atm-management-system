@@ -165,8 +165,6 @@ void Login(Users *table)
     printf("\n\n------------------------------> [ ... Login ... ] <------------------------------\n\n");
     printf("Enter your user name: ");
     scanf("%s", userName);
-
-    printf("your user name is: %s\n", userName);
     User *logedUser = LogedUser(table->HashedUsers[HashedIndex(userName)], userName);
     if (logedUser == NULL)
     {
@@ -177,7 +175,6 @@ void Login(Users *table)
     {
         printf("Enter your password: ");
         scanf("%s", password);
-        printf("Your password is: %s\n", password);
         if (strcmp(logedUser->Password, password) == 0)
         {
             printf("Connecting...\n");

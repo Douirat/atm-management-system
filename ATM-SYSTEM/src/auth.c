@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include "header.h"
 
 // Create an atoi to convert a string to an integer:
@@ -105,4 +106,19 @@ char *Ftoa(float fl)
     printf("the number of decimals is: %d and the float is %f\n", decimal, fraction);
     snprintf(str, 20, "%.*f", decimal, fl);
     return str;
+}
+
+// Is the the new use id valid:
+bool ValidCredentials(Users *table, int id, char *userName)
+{
+    User *Temp = table->HashedUsers[HashedIndex(userName)];
+    while (Temp != NULL)
+    {
+        if (Temp->Id == id || (strcmp(Temp->UserName, userName) == 0))
+        {
+            return false;
+        }
+        Temp = Temp->Next;
+    }
+    return true;
 }

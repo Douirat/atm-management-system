@@ -80,7 +80,9 @@ void ProfileMenu(Users *table, User *Profile)
         TransferOwnership(table, Profile);
         return;
     case 8:
-        printf("The user wants to log out!!!\n");
+        system("clear");
+        printf("\n\n\n\t\t-------->> Loging out... <<--------\n");
+        exit(1);
         return;
     }
 }
@@ -99,7 +101,18 @@ void UserRegistration(Users *table)
     scanf("%s", userName);
     printf("Enter your password: ");
     scanf("%s", password);
-    Insertion(table, id, userName, password);
-    AppendNewUser(table->HashedUsers[HashedIndex(userName)], userName);
-    Login(table);
+    if (ValidCredentials(table, id, userName))
+    {
+        Insertion(table, id, userName, password);
+        AppendNewUser(table->HashedUsers[HashedIndex(userName)], userName);
+        printf("User Created successfully\n");
+        sleep(3);
+        Login(table);
+    }
+    else
+    {
+        printf("Credentials are not valid, user name and password should be Unique!!!\n");
+        sleep(3);
+        InitialMenu(table);
+    }
 }

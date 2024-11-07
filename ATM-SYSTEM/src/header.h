@@ -87,5 +87,6 @@ int Atoi(const char *str);
 char *Itoa(int num);
 float Atof(char *str);
 char *Ftoa(float fl);
+bool ValidCredentials(Users *table, int id, char* userName);
 
 #endif // !ATM
