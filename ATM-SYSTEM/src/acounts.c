@@ -96,7 +96,6 @@ bool DeleteAcount(Acount **Node, int id)
 void CreateNewAcount(Users *table, User *Profile)
 {
     system("clear");
-    printf("%s\n", Profile->UserName);
     int acountId;
     char date[11];
     char country[50];
@@ -107,8 +106,17 @@ void CreateNewAcount(Users *table, User *Profile)
     printf("\n\n-------------------------> [ ... Create a new account ... ] <-------------------------\n\n");
     printf("\nEnter the acount id:");
     scanf("%d", &acountId);
+    if(!ValidAccountId(Profile->Acounts, acountId)) {
+        printf("The id should  be unique!");
+        CreateNewAcount(table, Profile);
+    }
     printf("\nEnter creation data in this form: 11/11/1111: ");
     scanf("%s", date);
+    if (!ValidAccountDate(Profile->Acounts, date)) {
+        printf("\nRespect the restriction of format: 11/11/1111\n");
+        sleep(3);
+        CreateNewAcount(table, Profile);
+    }
     printf("\nEnter your country name: ");
     scanf("%s", country);
     printf("\nEnter your phone number: ");

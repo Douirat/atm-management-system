@@ -122,3 +122,56 @@ bool ValidCredentials(Users *table, int id, char *userName)
     }
     return true;
 }
+
+// Validate acounts data:
+bool ValidAccountId(Acount *account, int id)
+{
+    if (account == NULL)
+    {
+        return true;
+    }
+    if (account->AcountId == id)
+    {
+        return false;
+    }
+    return ValidAccountId(account->Next, id);
+}
+
+// Validate the date:
+bool ValidAccountDate(Acount *account, char *date)
+{
+    if (strlen(date) != 10)
+    {
+        return false;
+    }
+    int helper = 0;
+    for (int i = 0; i < strlen(date); i++)
+    {
+        if (i == 2 || i == 5)
+        {
+            if (i == 2 && helper > 31 || i == 2 && helper < 0)
+            {
+                return false;
+            }
+            else if (i == 5 && helper > 12 || i == 5 && helper < 0)
+            {
+                return false;
+            }
+            helper = 0;
+            if (date[i] != 47)
+            {
+                return false;
+            }
+
+            continue;
+        }
+        helper = helper * 10 + date[i] - 48;
+        if (date[i] < 48 || date[i] > 57)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Validate the account number:

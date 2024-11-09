@@ -88,5 +88,7 @@ char *Itoa(int num);
 float Atof(char *str);
 char *Ftoa(float fl);
 bool ValidCredentials(Users *table, int id, char* userName);
+bool ValidAccountId(Acount* account, int id);
+bool ValidAccountDate(Acount *account, char *date);
 
 #endif // !ATM
