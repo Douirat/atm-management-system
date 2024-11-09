@@ -175,3 +175,32 @@ bool ValidAccountDate(Acount *account, char *date)
 }
 
 // Validate the account number:
+bool ValidAccountNumber(Acount *account, int number)
+{
+    if (account == NULL)
+    {
+        return true;
+    }
+    else if (account->AcountNumber == number)
+    {
+        return false;
+    }
+    return ValidAccountNumber(account->Next, number);
+}
+
+// Validate phone number:
+bool ValidPhone(Acount *account, char *phone)
+{
+    if (strlen(phone) != 12)
+    {
+        return false;
+    }
+    for (int i = 0; i < strlen(phone); i++)
+    {
+        if (phone[i] < 48 || phone[i] > 57)
+        {
+            return false;
+        }
+    }
+    return true;
+}

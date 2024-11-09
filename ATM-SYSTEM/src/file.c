@@ -186,7 +186,7 @@ Users *ExtractAcounts(Users **table)
     int acountId;
     char creationDate[11];
     char country[50];
-    char phone[11];
+    char phone[13];
     int acountNumber;
     float balance;
     char acountType[11];
@@ -218,11 +218,11 @@ Users *ExtractAcounts(Users **table)
             case 4:
                 strcpy(creationDate, str);
                 break;
-
             case 5:
                 strcpy(country, str);
                 break;
             case 6:
+                printf("%d\n", 6);
                 strcpy(phone, str);
                 break;
             case 7:
@@ -232,11 +232,14 @@ Users *ExtractAcounts(Users **table)
                 balance = Atof(str);
                 break;
             case 9:
+                printf("%d\n", 9);
+
                 strcpy(acountType, str);
                 break;
             }
             if (data[i] == '\n')
             {
+                printf("%s\n", phone);
                 AcountCreation(*table, userName, acountId, creationDate, country, phone, acountNumber, balance, acountType);
                 ind = 1;
             }

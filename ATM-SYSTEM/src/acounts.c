@@ -52,7 +52,6 @@ void DisplayAcounts(Acount *Node)
         printf("No acounts to show!!");
         return;
     }
-
     printf("                  ----------------------->> ... <<-----------------------\n\n");
     printf("                     -----> Acount id: %d\n", Node->AcountId);
     printf("                     -----> Creation Date: %s\n", Node->CreationDate);
@@ -100,19 +99,21 @@ void CreateNewAcount(Users *table, User *Profile)
     char date[11];
     char country[50];
     char phone[11];
-    int acountNumber;
+    int accountNumber;
     float balance;
     char acountType[10];
     printf("\n\n-------------------------> [ ... Create a new account ... ] <-------------------------\n\n");
     printf("\nEnter the acount id:");
     scanf("%d", &acountId);
-    if(!ValidAccountId(Profile->Acounts, acountId)) {
+    if (!ValidAccountId(Profile->Acounts, acountId))
+    {
         printf("The id should  be unique!");
         CreateNewAcount(table, Profile);
     }
     printf("\nEnter creation data in this form: 11/11/1111: ");
     scanf("%s", date);
-    if (!ValidAccountDate(Profile->Acounts, date)) {
+    if (!ValidAccountDate(Profile->Acounts, date))
+    {
         printf("\nRespect the restriction of format: 11/11/1111\n");
         sleep(3);
         CreateNewAcount(table, Profile);
@@ -121,8 +122,20 @@ void CreateNewAcount(Users *table, User *Profile)
     scanf("%s", country);
     printf("\nEnter your phone number: ");
     scanf("%s", phone);
+    if (!ValidPhone(Profile->Acounts, phone))
+    {
+        printf("\nEnter a valid phone number: 06**********\n");
+        sleep(3);
+        CreateNewAcount(table, Profile);
+    }
     printf("\nEnter your acount number: ");
-    scanf("%d", &acountNumber);
+    scanf("%d", &accountNumber);
+    if (!ValidAccountNumber(Profile->Acounts, accountNumber))
+    {
+        printf("\nAcount number Should be unique\n");
+        sleep(3);
+        CreateNewAcount(table, Profile);
+    }
     printf("\nEnter your the amount you want to deposit: ");
     scanf("%f", &balance);
     printf("\n         ------> Choose a type: ");
@@ -134,7 +147,7 @@ void CreateNewAcount(Users *table, User *Profile)
     printf("\n         ------> Enter the acount type: ");
     scanf("%s", acountType);
 
-    AcountCreation(table, Profile->UserName, acountId, date, country, phone, acountNumber, balance, acountType);
+    AcountCreation(table, Profile->UserName, acountId, date, country, phone, accountNumber, balance, acountType);
     WritingToFile("data/records.txt", "w", "");
 
     for (int i = 0; i < TABLE_SIZE; i++)
@@ -146,7 +159,6 @@ void CreateNewAcount(Users *table, User *Profile)
             Temp = Temp->Next;
         }
     }
-
     ProfileMenu(table, Profile);
 }
 

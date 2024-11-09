@@ -90,5 +90,7 @@ char *Ftoa(float fl);
 bool ValidCredentials(Users *table, int id, char* userName);
 bool ValidAccountId(Acount* account, int id);
 bool ValidAccountDate(Acount *account, char *date);
+bool ValidPhone(Acount *account, char *phone);
+bool ValidAccountNumber(Acount *account, int number);
 
 #endif // !ATM
