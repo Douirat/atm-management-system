@@ -7,6 +7,8 @@ int main()
 {
     Users *usersTable = ExtractUsers(usersTable);
     usersTable = ExtractAcounts(&usersTable);
-    InitialMenu(usersTable);
+    // InitialMenu(usersTable);
+    User* u = LogedUser(usersTable->HashedUsers[HashedIndex("AnnaBella")], "AnnaBella");
+    DeleteAcount(&u->Acounts, 11);
     return 0;
 }

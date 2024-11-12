@@ -204,3 +204,8 @@ bool ValidPhone(Acount *account, char *phone)
     }
     return true;
 }
+
+// Do the authentification fot the acount type:
+bool ValidType(char *type) {
+return (strcmp(type, "Fixed01") == 0 || strcmp(type, "Fixed02") == 0 || strcmp(type, "Fixed03") == 0 || strcmp(type, "Saving") == 0 || strcmp(type, "Current") == 0);
+}

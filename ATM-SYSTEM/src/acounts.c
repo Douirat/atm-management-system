@@ -70,6 +70,7 @@ void DisplayAcounts(Acount *Node)
 // Deleting a specific acount based on its id:
 bool DeleteAcount(Acount **Node, int id)
 {
+    printf("%d\n", id);
     if ((*Node) == NULL)
     {
         return false;
@@ -79,10 +80,10 @@ bool DeleteAcount(Acount **Node, int id)
         (*Node) = (*Node)->Next;
         return true;
     }
-    else if ((*Node)->Next != NULL && (*Node)->Next->AcountId == id)
+ if ((*Node)->Next != NULL && (*Node)->Next->AcountId == id)
     {
+        printf("%d", (*Node)->Next->AcountId);
         (*Node)->Next = (*Node)->Next->Next;
-        sleep(2);
         return true;
     }
     else if ((*Node)->Next == NULL)
@@ -92,6 +93,8 @@ bool DeleteAcount(Acount **Node, int id)
     return DeleteAcount(&(*Node)->Next, id);
 }
 
+
+// Create a new account:
 void CreateNewAcount(Users *table, User *Profile)
 {
     system("clear");
@@ -146,7 +149,12 @@ void CreateNewAcount(Users *table, User *Profile)
     printf("\n              -> Fixed03: (for 3 year)");
     printf("\n         ------> Enter the acount type: ");
     scanf("%s", acountType);
-
+    if (!ValidType(acountType))
+    {
+        printf("\n Invalid account type!!!\n");
+        sleep(3);
+        CreateNewAcount(table, Profile);
+    }
     AcountCreation(table, Profile->UserName, acountId, date, country, phone, accountNumber, balance, acountType);
     WritingToFile("data/records.txt", "w", "");
 
@@ -204,6 +212,7 @@ void DeleteAcountById(Users *table, User *Profile)
     printf("Acount id: ");
     scanf("%d", &choice);
     bool Deleted = DeleteAcount(&table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts, choice);
+
     if (Deleted)
     {
         printf("Acount was deleted successfully\n");
@@ -381,15 +390,18 @@ Acount *ChosenAcount(Acount **Node, int number)
     }
     else if ((*Node)->AcountNumber == number)
     {
+        if(strcmp((*Node)->AcountType, "Fixed01") == 0 || strcmp((*Node)->AcountType, "Fixed02") == 0 || strcmp((*Node)->AcountType, "Fixed03") == 0) {
+            printf("you can't deposite or withdraw money from or to  a fixed acount!!!\n");
+            return NULL;
+        }
         return (*Node);
     }
     return ChosenAcount(&(*Node)->Next, number);
 }
 
 // Extract the percetage:
-float IntrestRate(float balance, float interest)
-{
-    return (interest / balance) * 100.0;
+float IntrestRate(float balance, float interest){
+    return (interest / 100) * balance;
 }
 
 // Extract creation date:
@@ -434,7 +446,7 @@ void CheckAcountDetails(Users *table, User *Profile)
     printf("                     -----> Acount type: %s\n\n", Node->AcountType);
     if (strcmp(Node->AcountType, "Saving") == 0)
     {
-        printf("You will recieve %f of 7%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 7.0), CreationDay(Node->CreationDate));
+        printf("You will recieve %f$ which is 7%% of interest every %sth day of the month!\n\n", (IntrestRate(Node->Balance, 7.0)/12), CreationDay(Node->CreationDate));
     }
     else if (strcmp(Node->AcountType, "Current") == 0)
     {

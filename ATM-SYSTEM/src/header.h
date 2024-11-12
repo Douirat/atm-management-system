@@ -92,5 +92,6 @@ bool ValidAccountId(Acount* account, int id);
 bool ValidAccountDate(Acount *account, char *date);
 bool ValidPhone(Acount *account, char *phone);
 bool ValidAccountNumber(Acount *account, int number);
+bool ValidType(char *type);
 
 #endif // !ATM

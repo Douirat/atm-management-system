@@ -44,7 +44,7 @@ void ProfileMenu(Users *table, User *Profile)
     system("clear");
     int Option;
     printf("\n\n    =================================== << >> {{ ATM }} << >> =================================== \n");
-    printf("\n   -------------------->> Hello again mr %s How can we assist you today <<--------------------\n", Profile->UserName);
+    printf("\n   -------------------->> Hello again mr/ms %s How can we assist you today <<--------------------\n", Profile->UserName);
     printf("\n\t\t[1]- Create a new account\n");
     printf("\n\t\t[2]- Update account information\n");
     printf("\n\t\t[3]- Check existing accounts\n");
