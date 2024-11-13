@@ -68,31 +68,28 @@ void DisplayAcounts(Acount *Node)
 }
 
 // Deleting a specific acount based on its id:
-bool DeleteAcount(Acount **Node, int id)
+// Function to delete a node with a given key
+bool DeleteAcount(struct Acount **head, int key)
 {
-    printf("%d\n", id);
-    if ((*Node) == NULL)
+    struct Acount *temp = *head, *prev = NULL;
+    // If the head node holds the key to be deleted
+    if (temp != NULL && temp->AcountId == key)
     {
-        return false;
-    }
-    else if ((*Node)->AcountId == id)
-    {
-        (*Node) = (*Node)->Next;
+        *head = temp->Next;
+        free(temp);
         return true;
     }
- if ((*Node)->Next != NULL && (*Node)->Next->AcountId == id)
+    while (temp != NULL && temp->AcountId != key)
     {
-        printf("%d", (*Node)->Next->AcountId);
-        (*Node)->Next = (*Node)->Next->Next;
-        return true;
+        prev = temp;
+        temp = temp->Next;
     }
-    else if ((*Node)->Next == NULL)
-    {
+    if (temp == NULL)
         return false;
-    }
-    return DeleteAcount(&(*Node)->Next, id);
+    prev->Next = temp->Next;
+    free(temp);
+    return true;
 }
-
 
 // Create a new account:
 void CreateNewAcount(Users *table, User *Profile)
@@ -211,8 +208,11 @@ void DeleteAcountById(Users *table, User *Profile)
     printf("\n\n--------> Enter the edentification [ID] of the acount you want to delete <--------\n\n");
     printf("Acount id: ");
     scanf("%d", &choice);
-    bool Deleted = DeleteAcount(&table->HashedUsers[HashedIndex(Profile->UserName)]->Acounts, choice);
-
+    if (Profile->Acounts->AcountId == choice)
+    {
+        Profile->Acounts = Profile->Acounts->Next;
+    }
+    bool Deleted = DeleteAcount(&Profile->Acounts, choice);
     if (Deleted)
     {
         printf("Acount was deleted successfully\n");
@@ -323,11 +323,17 @@ void MakeTransaction(Users *table, User *Profile)
     bool changed = false;
     printf("Enter the number of your acount: \nhere: ");
     scanf("%d", &number);
-    Acount *acount = ChosenAcount(&Profile->Acounts, number);
-    if (acount == NULL)
+    Acount *account = ChosenAcount(&Profile->Acounts, number);
+    if (account == NULL)
     {
         printf("Acount not found!\n");
         sleep(2);
+        ProfileMenu(table, Profile);
+    }
+    if (strcmp((account)->AcountType, "Fixed01") == 0 || strcmp((account)->AcountType, "Fixed02") == 0 || strcmp((account)->AcountType, "Fixed03") == 0)
+    {
+        printf("you can't deposite or withdraw money from or to  a fixed acount!!!\n");
+        sleep(3);
         ProfileMenu(table, Profile);
     }
     printf("Do you want to: \n ------> [1] withdraw: \n ------> [2] Deposit: \n");
@@ -336,14 +342,14 @@ void MakeTransaction(Users *table, User *Profile)
     {
         printf("Enter the amount you want to withdraw\n here: ");
         scanf("%f", &amount);
-        if (amount > acount->Balance)
+        if (amount > account->Balance)
         {
             printf("The amount you entered is unavailable!\n");
             sleep(2);
         }
         else
         {
-            acount->Balance -= amount;
+            account->Balance -= amount;
             changed = true;
         }
     }
@@ -351,7 +357,7 @@ void MakeTransaction(Users *table, User *Profile)
     {
         printf("Enter the amount you want to withdraw\n here: ");
         scanf("%f", &amount);
-        acount->Balance += amount;
+        account->Balance += amount;
         changed = true;
     }
     else
@@ -359,7 +365,7 @@ void MakeTransaction(Users *table, User *Profile)
         printf("Enter a valid choice!\n");
         sleep(2);
     }
-    printf("The acount number is: %d and the credit is: %f\n", acount->AcountNumber, acount->Balance);
+    printf("The acount number is: %d and the credit is: %f\n", account->AcountNumber, account->Balance);
     if (changed == true)
     {
         WritingToFile("data/records.txt", "w", "");
@@ -388,19 +394,16 @@ Acount *ChosenAcount(Acount **Node, int number)
     {
         return NULL;
     }
-    else if ((*Node)->AcountNumber == number)
+    if ((*Node)->AcountNumber == number)
     {
-        if(strcmp((*Node)->AcountType, "Fixed01") == 0 || strcmp((*Node)->AcountType, "Fixed02") == 0 || strcmp((*Node)->AcountType, "Fixed03") == 0) {
-            printf("you can't deposite or withdraw money from or to  a fixed acount!!!\n");
-            return NULL;
-        }
         return (*Node);
     }
     return ChosenAcount(&(*Node)->Next, number);
 }
 
 // Extract the percetage:
-float IntrestRate(float balance, float interest){
+float IntrestRate(float balance, float interest)
+{
     return (interest / 100) * balance;
 }
 
@@ -435,6 +438,7 @@ void CheckAcountDetails(Users *table, User *Profile)
         printf("Acount Not found!!!");
         ProfileMenu(table, Profile);
     }
+    printf("%d\n", Node->AcountNumber);
     system("clear");
     printf("\n\n\n                  ----------------------->> ... <<-----------------------\n\n");
     printf("                     -----> Acount id: %d\n", Node->AcountId);
@@ -446,7 +450,7 @@ void CheckAcountDetails(Users *table, User *Profile)
     printf("                     -----> Acount type: %s\n\n", Node->AcountType);
     if (strcmp(Node->AcountType, "Saving") == 0)
     {
-        printf("You will recieve %f$ which is 7%% of interest every %sth day of the month!\n\n", (IntrestRate(Node->Balance, 7.0)/12), CreationDay(Node->CreationDate));
+        printf("You will recieve %f$ which is 7%% of interest every %sth day of the month!\n\n", (IntrestRate(Node->Balance, 7.0) / 12), CreationDay(Node->CreationDate));
     }
     else if (strcmp(Node->AcountType, "Current") == 0)
     {
@@ -460,7 +464,7 @@ void CheckAcountDetails(Users *table, User *Profile)
     {
         printf("You will recieve %f of 5%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 5.0), CreationDay(Node->CreationDate));
     }
-    else if (strcmp(Node->AcountType, "Fixed03"))
+    else if (strcmp(Node->AcountType, "Fixed03") == 0)
     {
         printf("You will recieve %f of 8%% interest on every 100$  every %sth day of the month!\n\n", IntrestRate(Node->Balance, 8.0), CreationDay(Node->CreationDate));
     }
